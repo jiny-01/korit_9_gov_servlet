@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
 
 /*
@@ -76,26 +77,30 @@ import java.util.Map;
 @WebServlet("/ch02/method")
 public class HttpMethodServlet extends HttpServlet {
 
+    //서버에 존재하는 데이터
+    //Map.of - immutable 객체 - 수정 불가능
+    Map<String, String> datas = new HashMap<>(Map.of(
+            "name", "김지니",
+            "age", "25",
+            "address", "해운대구"
+    ));
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("GET 요청 들어옴");
 
-        //서버에 존재하는 데이터
-        Map<String, String> datas = Map.of(
-                "name", "김지니",
-                "age", "25",
-                "address", "해운대구"
-        );
+
 
         //----------------------------요청----------------------------------------------
         System.out.println("요청1: " + req.getMethod());
         //요청 데이터 (파라미터)
-//        System.out.println(req.getParameter("datasKey"));  //age
+//        System.out.println(req.getParameter("datasKey"));  //name, age 등 키 출력
         String datasKey = req.getParameter("datasKey");
         System.out.println(datasKey);
         System.out.println(datas.get(req.getParameter("datasKey")));  //map 에서 get -> age 키의 value값 => 25
         //////////////////////////////////////////////////////////////////////////////
         //응답
+        resp.setContentType("text/html");
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());  //한글 인코딩
         PrintWriter out = resp.getWriter();    //.getWriter -> 리턴 PrintWriter 이므로 변수에 담음
         out.println(datas.get(datasKey));      //포스트맨 -> 25 출력 가능
@@ -103,6 +108,7 @@ public class HttpMethodServlet extends HttpServlet {
 
 
 
+    //post - params 안 씀
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("요청2: " + "POST 요청 들어옴");
@@ -112,5 +118,16 @@ public class HttpMethodServlet extends HttpServlet {
         //////////////////////////////////////////////////////////////////////////////
         //요청 데이터 (파라미터)
         System.out.println(req.getParameter("textData"));
+        //body 데이터도 getParameter 로 받음
+        //but 포스트맨 요청 시 params 에는 넣으면 안됨 -> 주소창에 노출되지 않도록
+        datas.put(req.getParameter("keyName"), req.getParameter("value"));
+        //////////////////////////////////////////////////////////////////////////////
+        //응답
+        resp.setStatus(201);                //상태 : 201 Created (생성 성공)
+        resp.setContentType("text/plain");  //타입: 텍스트
+        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());  //인코딩
+        resp.getWriter().println("데이터 추가 성공!!");
+
+
     }
 }
