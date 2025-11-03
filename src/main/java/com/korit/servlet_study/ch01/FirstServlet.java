@@ -35,7 +35,7 @@ public class FirstServlet extends HttpServlet {
     }
     //서블릿이 처음 초기화될 때 한 번만 호출
     //ServletConfig - 이 서블릿에만 해당되는 설정
-    //ServletContext - 모든 서블릿이 공유하는 공간
+    //ServletContext - 모든 서블릿이 공유하는 공간, 서버가 실행되고 소멸되기 전까지 계속 존재
     //config → 이 서블릿 개별 초기 설정 정보(ServletConfig)
     //config.getServletContext() → 웹 애플리케이션 전체에서 공유되는 공간(ServletContext)
     //따라서 age = 25라는 데이터를 모든 서블릿이 공유 가능하게 저장
