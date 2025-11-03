@@ -1,11 +1,16 @@
 package com.korit.servlet_study.ch01;
 
+import org.w3c.dom.ls.LSOutput;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 /*
 * HTTP 프로토콜 Method
@@ -67,22 +72,45 @@ import java.io.IOException;
 *
 * */
 //이 주석 쓰면 xml 에 매핑 안해도 됨
-@WebServlet("/ch02/method/get")
-public class HttpMethod extends HttpServlet {
+//get, post 명시하지 않기로
+@WebServlet("/ch02/method")
+public class HttpMethodServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("GET 요청 들어옴");
+
+        //서버에 존재하는 데이터
+        Map<String, String> datas = Map.of(
+                "name", "김지니",
+                "age", "25",
+                "address", "해운대구"
+        );
+
+        //----------------------------요청----------------------------------------------
+        System.out.println("요청1: " + req.getMethod());
+        //요청 데이터 (파라미터)
+//        System.out.println(req.getParameter("datasKey"));  //age
+        String datasKey = req.getParameter("datasKey");
+        System.out.println(datasKey);
+        System.out.println(datas.get(req.getParameter("datasKey")));  //map 에서 get -> age 키의 value값 => 25
+        //////////////////////////////////////////////////////////////////////////////
+        //응답
+        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());  //한글 인코딩
+        PrintWriter out = resp.getWriter();    //.getWriter -> 리턴 PrintWriter 이므로 변수에 담음
+        out.println(datas.get(datasKey));      //포스트맨 -> 25 출력 가능
     }
 
 
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("요청2: " + "POST 요청 들어옴");
 
-
-
-
-
-
-
-
+        //----------------------------요청----------------------------------------------
+        System.out.println(req.getMethod());
+        //////////////////////////////////////////////////////////////////////////////
+        //요청 데이터 (파라미터)
+        System.out.println(req.getParameter("textData"));
+    }
 }
