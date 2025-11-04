@@ -89,10 +89,10 @@ public class HttpMethodServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("GET 요청 들어옴");
 
-
-
         //----------------------------요청----------------------------------------------
+        //메서드 확인 - Get 출력
         System.out.println("요청1: " + req.getMethod());
+
         //요청 데이터 (파라미터)
 //        System.out.println(req.getParameter("datasKey"));  //name, age 등 키 출력
         String datasKey = req.getParameter("datasKey");
@@ -105,7 +105,6 @@ public class HttpMethodServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();    //.getWriter -> 리턴 PrintWriter 이므로 변수에 담음
         out.println(datas.get(datasKey));      //포스트맨 -> 25 출력 가능
     }
-
 
 
     //post - params 안 씀
@@ -123,8 +122,8 @@ public class HttpMethodServlet extends HttpServlet {
         datas.put(req.getParameter("keyName"), req.getParameter("value"));
         //////////////////////////////////////////////////////////////////////////////
         //응답
-        resp.setStatus(201);                //상태 : 201 Created (생성 성공)
-        resp.setContentType("text/plain");  //타입: 텍스트
+        resp.setStatus(201);                 //상태 : 201 Created (생성 성공)
+        resp.setContentType("text/plain");   //타입: 텍스트
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());  //인코딩
         resp.getWriter().println("데이터 추가 성공!!");
 
