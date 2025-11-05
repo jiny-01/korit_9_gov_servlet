@@ -1,19 +1,16 @@
 package com.korit.servlet_study.ch08;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.korit.servlet_study.ch05.Response;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @WebServlet("/board")
 public class BoardServlet extends HttpServlet {
@@ -32,6 +29,9 @@ public class BoardServlet extends HttpServlet {
         System.out.println("POST 요청 들어옴");
         //요청 데이터 형식
         req.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        //응답
+        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        resp.setContentType("application/json");
 
 //      //Buffered 리더로 읽어온 문자열 -> StringBuilder 활용해서 객체로 변환
 //        InputStreamReader inputStream = new InputStreamReader(req.getInputStream());
@@ -63,15 +63,29 @@ public class BoardServlet extends HttpServlet {
         boardsList.add(board);
         System.out.println(boardsList);
 
-
         //응답
+        // 응답 객체 생성
         Response response = Response.builder()
-                    .message("게시글 작성 완료")
-                    .build();
+                .message("게시글 작성 완료")
+                .build();
 
+        // JSON으로 postman 에서 응답 보내기 - postman 의 요청 결과에 보이는 부분
+        objectMapper.writeValue(resp.getWriter(), response);  //이것만 하면 json 처럼 생긴 문자열
 
+    }
 
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //요청 데이터
+        req.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        //응답 데이터
+        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        resp.setContentType("application/json");
 
+        ObjectMapper om = new ObjectMapper();
 
+        //users 배열 전체 조회 -> Json 배열로 응답
+        om.writeValue(resp.getWriter(), boardsList);
+        System.out.println("리스트 확인: " + boardsList);
     }
 }

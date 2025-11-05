@@ -1,4 +1,4 @@
-package com.korit.servlet_study.ch08;
+package com.korit.servlet_study.ch07;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Response {
     private String message;
+
 }
