@@ -23,17 +23,18 @@ public class UserServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        userRepository = UserRepository.getInstance();
-        objectMapper = new ObjectMapper();
+        userRepository = UserRepository.getInstance();  //UserRepository 싱글톤 가져옴
+        objectMapper = new ObjectMapper();  //ObjectMapper = JSON 변환 도구
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
         resp.setContentType("application/json");
-        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findAll();  //users 전체 조회
 
-        objectMapper.writeValue(resp.getWriter(), users);  //users 배열 전체 조회
+        //users 배열 전체 조회 -> Json 배열로 응답
+        objectMapper.writeValue(resp.getWriter(), users);
 
     }
 
@@ -58,11 +59,14 @@ public class UserServlet extends HttpServlet {
 //        UserDto userDto = objectMapper.readValue(builder.toString(), UserDto.class);
 
 
-        //#2) inputstream 을 알아서 objectMapper 가 변환해줌
-        //38라인 ~49라인까지의 과정과 동일
-        UserDto userDto = objectMapper.readValue(req.getInputStream(), UserDto.class);
-        System.out.println(userDto);
+        //BufferedReader 로 읽어서 객체로 변환하는 과정과 동일
+        //#2) 요청 본문, 즉 inputstream 을 알아서 objectMapper 가 변환해줌
         //req.getInputStream() 으로 Json 문자열을 읽어서 UserDto 객체로 바꿔줌
+
+
+        UserDto userDto = objectMapper.readValue(req.getReader(), UserDto.class);
+        System.out.println(userDto);
+
 
         User foundUser = userRepository.findByUsername(userDto.getUsername());
 

@@ -27,6 +27,7 @@ public class UserRepository {
         users.add(user);
     }
 
+    //#1) Optional 사용
     public User findByUsername(String username) {
         //users 리스트 반복돌리며서 username 걸러내기
 //        Optional<User> userOptional = users.stream()
@@ -42,7 +43,7 @@ public class UserRepository {
         //optional 이 null 이면 get 이 안됨
         //.orElse -> 없으면 새로운 User 객체를 만들어줌 (매개변수로 넣어준 user 줄 것) / 있으면 찾은 객체 리턴해줌
         //filter -> 다시 optional 리턴 / 없으면 null => null 처리 가능
-        //orElseGet -> Supplier
+        //orElseGet -> Supplier - 찾았으면 user / 비어있으면 null 반환
     }
 
     //#2) Optional 없이

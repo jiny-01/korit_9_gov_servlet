@@ -15,6 +15,7 @@ public class UserDto {
     private String name;
     private String email;
 
+    //DTO -> User 엔티티 객체
     public User toUser() {
         return User.builder()
                 .username(username)
