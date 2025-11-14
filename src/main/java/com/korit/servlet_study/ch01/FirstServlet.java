@@ -10,7 +10,6 @@ import java.io.IOException;
 //추상클래스를 상속했는데 에러 없음 -> 추상메서드가 하나도 없을 경우
 public class FirstServlet extends HttpServlet {
 
-
     public FirstServlet() {
         System.out.println("FirstServlet 생성자 호출");
     }

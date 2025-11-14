@@ -43,7 +43,7 @@ public class DepartmentDao {
 
             while (rs.next()) {
                 Department department = Department.builder()
-                        .departmentId(rs.getInt("department_id"))
+                        .departmentId(rs.getInt("department_id"))        //컬럼 인덱스 / 컬럼명 둘 다 가능
                         .departmentCode(rs.getString("department_code"))
                         .departmentName(rs.getString("department_name"))
                         .build();
