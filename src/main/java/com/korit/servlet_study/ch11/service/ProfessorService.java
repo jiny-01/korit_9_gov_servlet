@@ -12,9 +12,12 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class ProfessorService {
-    private final ProfessorDao professorDao;
+//    private final ProfessorDao professorDao;
 
-    public List<Professor> getProfessors() {
-        return professorDao.findAllLikeName("");
+    //서비스에 키 값 매개변수로 전달
+    public List<Professor> getProfessors(String query) {
+        //DAO에서 호출하기 위해 DAO 생성해서 사용
+        ProfessorDao professorDao = new ProfessorDao();
+        return professorDao.findAllLikeName(query);
     }
 }

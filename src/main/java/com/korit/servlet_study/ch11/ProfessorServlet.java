@@ -34,8 +34,15 @@ public class ProfessorServlet extends HttpServlet {
         objectMapper = new ObjectMapper();
     }
 
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // q 를 키값으로 하는 파람 뽑아내기
+        String q = req.getParameter("q");
+        //DB 랑 비교해서 찾아야하는데 DAO 로 바로 갈 수 없음 -> Service 필요
+        //DAO 호출 - 이떄 찾는 값 q를 넘겨줌
+        professorService.getProfessors(q);
+
         List<Professor> professorList = professorService.getProfessors();
         objectMapper.writeValue(resp.getWriter(), professorList);
     }
